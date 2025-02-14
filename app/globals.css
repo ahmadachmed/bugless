@@ -9,8 +9,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #15171B;
     --foreground: #ededed;
+  }
+}
+
+@layer base{
+  h3{
+    @apply text-xl font-semibold text-foreground
   }
 }
 
