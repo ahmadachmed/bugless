@@ -12,7 +12,7 @@ const SidebarMenu = ({ menu, children }: SidebarMenuProps) => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 border-r border-[#1E2028]">
       {/* Parent Menu */}
       <button
         className="flex items-center px-4 py-2 space-x-2 text-left hover:bg-[#1E2028] rounded-md"

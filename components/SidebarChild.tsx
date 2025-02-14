@@ -6,9 +6,9 @@ interface SidebarChildProps {
 
 const SidebarChild = ({ items }: SidebarChildProps) => {
   return (
-    <div className="px-5 space-y-1">
+    <div className="space-y-1">
       {items.map((item) => (
-        <p key={item.id} className="text-gray-300 hover:text-white">{item.title}</p>
+        <p key={item.id} className="px-4 py-2 w-fit text-gray-300 hover:bg-[#1E2028] rounded-md">{item.title}</p>
       ))}
     </div>
   );

@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   ]
   return (
-    <section className="w-[30%] px-10 py-14 border-r border-[#1E2028]">
+    <div className="min-w-[30%] px-10 py-14">
         <SidebarMenu menu={{title: "Getting Started"}}>
             <SidebarChild items={starter}/>
         </SidebarMenu>
@@ -33,7 +33,7 @@ const Sidebar = () => {
         <SidebarMenu menu={{ title: "Articles" }}>
           <SidebarChild items={articles} />
         </SidebarMenu>
-    </section>
+    </div>
   );
 };
 
