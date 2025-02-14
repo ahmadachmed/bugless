@@ -9,14 +9,23 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #15171B;
+    --background: #15171b;
     --foreground: #ededed;
   }
 }
 
-@layer base{
-  h3{
-    @apply text-xl font-semibold text-foreground
+@layer base {
+  h1 {
+    @apply text-5xl font-bold text-foreground leading-snug;
+  }
+  h2 {
+    @apply text-3xl font-semibold text-foreground;
+  }
+  h3 {
+    @apply text-xl font-semibold text-foreground;
+  }
+  p{
+    @apply text-sm text-foreground leading-relaxed;
   }
 }
 
@@ -24,4 +33,10 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .image-hover {
+    @apply transform transition-transform duration-300 hover:-translate-y-2;
+  }
 }
