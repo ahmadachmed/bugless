@@ -1,20 +1,12 @@
-const articles = [
-  {
-    title: "QA Fundamental",
-    slug: "qa-fundamental",
-    date: "June 3, 2024",
-    author: "John Doe",
-    content: "Learn the basic of software testing and quality assurance.",
-  },
-];
-
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const slug = (await params).slug;
-  const article = articles.find((article) => article.slug === slug);
+    const slug = (await params).slug;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`);
+    const articles = await res.json();
+    const article = articles.find((article: { slug: string }) => article.slug === slug);
 
   if (!article) {
     return <div>Article not found</div>;

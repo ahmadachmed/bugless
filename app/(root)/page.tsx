@@ -1,17 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
-  const articles = [
-    {
-      title: "QA Fundamental",
-      slug: "qa-fundamental",
-      date: "June 3, 2024",
-      category: "Fundamental",
-      description: "Learn the basic of software testing and quality assurance.",
-      imageUrl: "https://images.unsplash.com/photo-1570215170761-f056128eda48?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+type Article = {
+  title: string;
+  slug: string;
+  imageUrl: string;
+  date: string;
+  category: string;
+  description: string;
+};
+
+export default async function Home() {
+  const articles: Article[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`)
+    .then(res => res.json())
   return (
     <section className="px-10">
       <div className="flex flex-col space-y-3">
