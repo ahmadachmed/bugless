@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   ]
   return (
-    <div className="min-w-[30%] px-10 py-14">
+    <div className="min-w-[30%] px-10">
         <SidebarMenu menu={{title: "Getting Started"}}>
             <SidebarChild items={starter}/>
         </SidebarMenu>
