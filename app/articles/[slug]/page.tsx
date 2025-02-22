@@ -5,8 +5,8 @@ import bookmarkPlugin from "@notion-render/bookmark-plugin";
 import { NotionRenderer } from "@notion-render/client/dist/notion-renderer";
 import hljsPlugin from "@notion-render/hljs-plugin";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const slug = (await params).slug;
+export default async function Page({ params }: {params: Promise<{slug: string}>}) {
+  const slug  = (await params).slug
   const post = await getPageBySlug(slug);
   if (!post) {
     return <div>Article not found</div>;
@@ -25,12 +25,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <Article
-      title={(post.properties.title as any).title[0].plain_text}
-      imageUrl={(post.cover as any)?.external?.url || (post.cover as any)?.file?.url}
-      author={(post.properties.Author as any).people[0].name}
-      date={(post.properties.Created as any).created_time}
-      category={(post.properties.Tags as any).multi_select[0].name}
-      description={(post.properties.Description as any).rich_text[0].plain_text}
+      title={(post.properties.title as any)?.title?.[0]?.plain_text || "Untitled"}
+      imageUrl={(post.cover as any)?.external?.url || (post.cover as any)?.file?.url || "/next.svg"}
+      author={(post.properties.Author as any)?.people?.[0]?.name || "unknown"}
+      date={(post.properties.Created as any)?.created_time || "no date"}
+      category={(post.properties.Tags as any)?.multi_select?.[0]?.name || "Uncategorized"}
+      description={(post.properties.Description as any)?.rich_text?.[0]?.plain_text || ""}
       content={html}
     />
   );
