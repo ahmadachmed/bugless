@@ -38,7 +38,7 @@ export default async function Home() {
           >
             <div className="rounded-md space-y-2 cursor-pointer">
               <Image
-                src={article.cover?.external?.url}
+                src={article.cover?.external?.url || article.cover?.file?.url}
                 alt={article.properties.title.title[0].plain_text}
                 width={500}
                 height={128}
