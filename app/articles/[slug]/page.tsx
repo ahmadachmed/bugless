@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <Article
       title={(post.properties.title as any).title[0].plain_text}
-      imageUrl={(post.cover as any)?.external?.url}
+      imageUrl={(post.cover as any)?.external?.url || (post.cover as any)?.file?.url}
       author={(post.properties.Author as any).people[0].name}
       date={(post.properties.Created as any).created_time}
       category={(post.properties.Tags as any).multi_select[0].name}
