@@ -6,7 +6,6 @@ import { getPages } from "../lib/notion";
 export default async function Home() {
   const resp = await getPages();
   const articles = resp.results as any;
-  console.log(articles);
   if (!articles) {
     return <div>No articles found</div>;
   }
@@ -33,13 +32,13 @@ export default async function Home() {
         {articles.map((article: any) => (
           <Link
             key={article.id}
-            href={`/articles/${article.properties.Slug.formula.string}`}
+            href={`/articles/${article.properties.Slug?.formula?.string}`}
             passHref
           >
             <div className="rounded-md space-y-2 cursor-pointer">
               <Image
                 src={article.cover?.external?.url || article.cover?.file?.url}
-                alt={article.properties.title.title[0].plain_text}
+                alt={article.properties.title?.title?.[0]?.plain_text}
                 width={500}
                 height={128}
                 className="w-full h-auto object-cover rounded-md mb-3 image-hover"

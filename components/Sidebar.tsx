@@ -9,7 +9,7 @@ const Sidebar = ({articles}: {articles: any[]}) => {
 
   const formattedArticles = articles?.map((article) => ({
     id: article.id,
-    title: article.properties.title.title[0].plain_text,
+    title: article.properties.title?.title?.[0]?.plain_text,
     slug: article.properties.Slug?.formula?.string || "",
   }));
 
