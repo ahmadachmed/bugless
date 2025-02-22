@@ -5,8 +5,8 @@ import bookmarkPlugin from "@notion-render/bookmark-plugin";
 import { NotionRenderer } from "@notion-render/client/dist/notion-renderer";
 import hljsPlugin from "@notion-render/hljs-plugin";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const {slug} = params 
+export default async function Page({ params }: {params: Promise<{slug: string}>}) {
+  const slug  = (await params).slug
   const post = await getPageBySlug(slug);
   if (!post) {
     return <div>Article not found</div>;
