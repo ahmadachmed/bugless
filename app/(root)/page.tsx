@@ -1,18 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import Link from "next/link";
-
-type Article = {
-  title: string;
-  slug: string;
-  imageUrl: string;
-  date: string;
-  category: string;
-  description: string;
-};
+import { getPages } from "../lib/notion";
 
 export default async function Home() {
-  const articles: Article[] = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`)
-    .then(res => res.json())
+  const resp = await getPages();
+  const articles = resp.results as any;
+  console.log(articles);
+  if (!articles) {
+    return <div>No articles found</div>;
+  }
+  // console.log(articles);
   return (
     <section className="px-10">
       <div className="flex flex-col space-y-3">
@@ -32,28 +30,37 @@ export default async function Home() {
         </button>
       </div>
       <div className="grid grid-cols-3 gap-5 mt-5">
-      {articles.map((article) => (
+        {articles.map((article: any) => (
           <Link
-            key={article.title}
-            href={`/articles/${article.slug}`}
+            key={article.id}
+            href={`/articles/${article.properties.Slug.formula.string}`}
             passHref
           >
             <div className="rounded-md space-y-2 cursor-pointer">
               <Image
-                src={article.imageUrl}
-                alt={article.title}
+                src={article.cover?.external?.url}
+                alt={article.properties.title.title[0].plain_text}
                 width={500}
                 height={128}
                 className="w-full h-auto object-cover rounded-md mb-3 image-hover"
               />
-              <p className="text-xs text-slate-500">{article.date}</p>
-              <p className="px-2 py-1 bg-[#1E2028] text-blue-800 rounded-lg w-fit">
-                {article.category}
+              <p className="text-xs text-slate-500">
+                {article.properties.Created?.created_time}
               </p>
+              <div className="flex space-x-2">
+                {article.properties.Tags?.multi_select?.map((tag: any) => (
+                  <p
+                    key={tag.id}
+                    className="px-2 py-1 bg-[#1E2028] text-blue-800 rounded-lg w-fit"
+                  >
+                    {tag.name}
+                  </p>
+                ))}
+              </div>
               <div className="space-y-1">
-                <h3>{article.title}</h3>
+                <h3>{article.properties.title?.title?.[0]?.plain_text}</h3>
                 <p className="text-xs text-slate-400">
-                  {article.description}
+                  {article.properties.Description?.rich_text?.[0]?.plain_text}
                 </p>
               </div>
             </div>

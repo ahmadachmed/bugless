@@ -1,50 +1,37 @@
-import Avatar from "@/components/Avatar";
-import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getPageBySlug, getPageContent, notion } from "@/app/lib/notion";
+import Article from "@/components/Article";
+import bookmarkPlugin from "@notion-render/bookmark-plugin";
+import { NotionRenderer } from "@notion-render/client/dist/notion-renderer";
+import hljsPlugin from "@notion-render/hljs-plugin";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const slug = (await params).slug;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles`);
-  const articles = await res.json();
-  const article = articles.find(
-    (article: { slug: string }) => article.slug === slug
-  );
-
-  if (!article) {
+  const post = await getPageBySlug(slug);
+  if (!post) {
     return <div>Article not found</div>;
   }
 
+  const content = await getPageContent(post.id);
+  const notionRenderer = new NotionRenderer({
+    client: notion,
+  });
+
+  notionRenderer.use(hljsPlugin({}));
+  notionRenderer.use(bookmarkPlugin(undefined));
+  const html = await notionRenderer.render(...content);
+
+  console.log("article: ", post);
+
   return (
-    <div className="flex flex-col items-start space-y-4 pr-8">
-      <div className="flex items-center justify-center space-x-2">
-        <Avatar src={article.imageUrl} alt={article.title} size="md" />
-        <div>
-          <p className="text-slate-500">{article.author}</p>
-          <p className="text-slate-500">
-            {article.date} / {article.category}
-          </p>
-        </div>
-      </div>
-      <div className=" antialiased">
-        <h1 className="text-2xl font-semibold">{article.title}</h1>
-        <p className="text-md text-gray-400">{article.description}</p>
-      </div>
-      <div>
-        <Image
-          src={article.imageUrl}
-          alt={article.title}
-          width={800}
-          height={400}
-          className="object-cover w-full h-full"
-          priority
-        />
-      </div>
-      <div>
-        <p>{article.content}</p>
-      </div>
-    </div>
+    <Article
+      title={(post.properties.title as any).title[0].plain_text}
+      imageUrl={(post.cover as any)?.external?.url}
+      author={(post.properties.Author as any).people[0].name}
+      date={(post.properties.Created as any).created_time}
+      category={(post.properties.Tags as any).multi_select[0].name}
+      description={(post.properties.Description as any).rich_text[0].plain_text}
+      content={html}
+    />
   );
 }
