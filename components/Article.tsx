@@ -41,7 +41,7 @@ export function Article(props: ArticleProps) {
           priority
         />
       </div>
-      <div dangerouslySetInnerHTML={{ __html: content }}></div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="prose prose-green prose-code:text-slate-200 prose-headings:text-foreground"></div>
     </div>
   );
 }
